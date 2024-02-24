@@ -1,4 +1,4 @@
-# Getting Started with Create React App
+# Sobre o projeto 
 Tela de Cadastro com React Hook Form e Zod
 
-link: https://master.d3bhnpcd78c5zs.amplifyapp.com/
+Deploy: https://master.d3bhnpcd78c5zs.amplifyapp.com/

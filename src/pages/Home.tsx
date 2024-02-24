@@ -1,5 +1,6 @@
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
+
 import * as z from "zod"
 import { Box, Button, Container, FormControl, TextField, Typography } from "@mui/material"
 
@@ -17,10 +18,8 @@ export const Home: React.FC = () => {
     const { handleSubmit, register, formState: { errors }, reset } = useForm<IFormInput>({ resolver: zodResolver(schema) })
 
     const handleForm = (data: IFormInput) => {
-
-
+        alert(`Nome:${data.firstName} \n Sobrenome: ${data.lastName} \n Idade:${data.age}`)
         reset()
-
     }
 
 
@@ -30,20 +29,23 @@ export const Home: React.FC = () => {
                 <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", minHeight: "100vh" }}>
                     <form onSubmit={handleSubmit(handleForm)}>
                         <FormControl sx={{ background: "#fff", padding: "70px", borderRadius: "10px" }}>
-                            <TextField id="firstName" error={!!errors.firstName?.message} label="Digite seu nome" variant="outlined" {...register("firstName")} placeholder="Digite seu nome" sx={{ my: "15px" }} />
-                            {errors.firstName?.message && (<Typography>
+                            <TextField id="firstName" error={!!errors.firstName?.message} label="Digite seu nome" variant="outlined" {...register("firstName")} placeholder="Digite seu nome" />
+                            {errors.firstName?.message && (<label htmlFor="firstName"><Typography sx={{ my: "5px" }}>
                                 {errors.firstName?.message}
-                            </Typography>)}
+                            </Typography>
+                            </label>)}
 
-                            <TextField id="lastName" label="Digite seu sobrenome" error={!!errors.lastName?.message} variant="outlined" {...register("lastName")} placeholder="Digite seu nome" sx={{ my: "15px" }} />
-                            {errors.lastName?.message && (<Typography>
+                            <TextField id="lastName" label="Digite seu sobrenome" error={!!errors.lastName?.message} variant="outlined" {...register("lastName")} placeholder="Digite seu nome" sx={{ mt: "15px" }} />
+                            {errors.lastName?.message && (<label htmlFor="lastName"><Typography sx={{ my: "5px" }}>
                                 {errors.lastName?.message}
-                            </Typography>)}
-                            <TextField type="number" id="age" label="Digite sua idade" error={!!errors.age?.message} variant="outlined" {...register("age", { valueAsNumber: true })} placeholder="Digite sua age" sx={{ my: "15px" }} />
-                            {errors.age?.message && (<Typography>
-                                {errors.age?.message}
-                            </Typography>)}
-                            <Button type="submit" variant="contained">Enviar</Button>
+                            </Typography>
+                            </label>)}
+                            <TextField type="number" id="age" label="Digite sua idade" error={!!errors.age?.message} variant="outlined" {...register("age", { valueAsNumber: true })} placeholder="Digite sua age" sx={{ mt: "15px" }} />
+                            {errors.age?.message && (
+                                <label htmlFor="age"><Typography sx={{ my: "5px" }}>
+                                    {errors.age?.message}
+                                </Typography></label>)}
+                            <Button type="submit" variant="contained" sx={{ mt: "20px" }}>Enviar</Button>
                         </FormControl>
                     </form>
                 </Box>
