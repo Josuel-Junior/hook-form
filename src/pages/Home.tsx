@@ -1,21 +1,24 @@
 import { useForm } from "react-hook-form"
+import { zodResolver } from "@hookform/resolvers/zod"
+import * as z from "zod"
 import { Box, Button, Container, FormControl, TextField, Typography } from "@mui/material"
 
-interface IFormInput {
-    firstName: string;
-    lastName: string;
-    age: number;
-}
+
+type IFormInput = z.infer<typeof schema>
+
+const schema = z.object({
+    firstName: z.string().min(1, { message: "Primeiro nome é obrigatório!" }).min(3, { message: "Primeiro nome deve conter pelo menos 3 caracteres!" }),
+    lastName: z.string().min(1, { message: "Sobrenome é obrigatório!" }).min(3, { message: "Sobrenome deve conter pelo menos 3 caracteres!" }),
+    age: z.number({ required_error: "O campo 'Idade' é obrigatório!", invalid_type_error: "Campo de idade é obrigatório" }).min(18, { message: "Você deve ter no mínimo 18 anos" }).max(90, { message: "Você deve ter no máximo 80 anos" })
+})
 
 export const Home: React.FC = () => {
 
-    const { handleSubmit, register, formState: { errors }, reset } = useForm<IFormInput>()
+    const { handleSubmit, register, formState: { errors }, reset } = useForm<IFormInput>({ resolver: zodResolver(schema) })
 
     const handleForm = (data: IFormInput) => {
 
-        console.log(data)
 
-        console.log(errors.age)
         reset()
 
     }
@@ -27,18 +30,18 @@ export const Home: React.FC = () => {
                 <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", minHeight: "100vh" }}>
                     <form onSubmit={handleSubmit(handleForm)}>
                         <FormControl sx={{ background: "#fff", padding: "70px", borderRadius: "10px" }}>
-                            <TextField id="firstName" label="Digite seu nome" variant="outlined" {...register("firstName", { required: true, minLength: 2 })} placeholder="Digite seu nome" sx={{ my: "15px" }} />
-                            {errors.firstName && (<Typography>
-                                Campo obrigatório
+                            <TextField id="firstName" error={!!errors.firstName?.message} label="Digite seu nome" variant="outlined" {...register("firstName")} placeholder="Digite seu nome" sx={{ my: "15px" }} />
+                            {errors.firstName?.message && (<Typography>
+                                {errors.firstName?.message}
                             </Typography>)}
 
-                            <TextField id="lastName" label="Digite seu sobrenome" variant="outlined" {...register("lastName", { required: true, minLength: 2 })} placeholder="Digite seu nome" sx={{ my: "15px" }} />
-                            {errors.lastName && (<Typography>
-                                Campo obrigatório
+                            <TextField id="lastName" label="Digite seu sobrenome" error={!!errors.lastName?.message} variant="outlined" {...register("lastName")} placeholder="Digite seu nome" sx={{ my: "15px" }} />
+                            {errors.lastName?.message && (<Typography>
+                                {errors.lastName?.message}
                             </Typography>)}
-                            <TextField id="age" label="Digite sua age" variant="outlined" {...register("age", { required: true, min: 2 })} placeholder="Digite sua age" sx={{ my: "15px" }} />
-                            {errors.age && (<Typography>
-                                Campo obrigatório
+                            <TextField type="number" id="age" label="Digite sua idade" error={!!errors.age?.message} variant="outlined" {...register("age", { valueAsNumber: true })} placeholder="Digite sua age" sx={{ my: "15px" }} />
+                            {errors.age?.message && (<Typography>
+                                {errors.age?.message}
                             </Typography>)}
                             <Button type="submit" variant="contained">Enviar</Button>
                         </FormControl>
