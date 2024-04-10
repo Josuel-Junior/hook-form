@@ -4,7 +4,7 @@
 <img src="https://www.datocms-assets.com/115877/1712789321-capturar.png" target="_blank">
 
 
-## Deploy: https://master.d3bhnpcd78c5zs.amplifyapp.com/
+## Deploy: https://hook-form-six.vercel.app/
 
 # Tecnologias e bibliotecas utilizadas
 
